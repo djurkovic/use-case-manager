@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Use Case Manager</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🤖 AI Use Case Manager</h1>
+            <div class="header-actions">
+                <button id="addUseCaseBtn" class="btn btn-primary">+ Add Use Case</button>
+                <button id="listViewBtn" class="btn btn-secondary">📋 List View</button>
+                <button id="gridViewBtn" class="btn btn-primary">📊 Grid View</button>
+                <button id="statsBtn" class="btn btn-secondary">📈 Stats</button>
+            </div>
+        </header>
+
+        <div class="filters">
+            <div class="filter-group">
+                <label>Status:</label>
+                <select id="statusFilter">
+                    <option value="">All</option>
+                    <option value="active">Active</option>
+                    <option value="archived">Archived</option>
+                    <option value="draft">Draft</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Implementation:</label>
+                <select id="implementationFilter">
+                    <option value="">All</option>
+                    <option value="backlog">Backlog</option>
+                    <option value="work_in_progress">Work in Progress</option>
+                    <option value="implemented">Implemented</option>
+                    <option value="ignored">Ignored</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Category:</label>
+                <select id="categoryFilter">
+                    <option value="">All Categories</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Search:</label>
+                <input type="text" id="searchInput" placeholder="Search use cases...">
+            </div>
+        </div>
+
+        <main>
+            <!-- Grid View -->
+            <div id="gridView" class="view active">
+                <div class="grid-container">
+                    <div class="grid-labels">
+                        <div class="y-axis-label">
+                            <span>Business Benefit</span>
+                            <div class="axis-markers">
+                                <span>High</span>
+                                <span>Medium</span>
+                                <span>Low</span>
+                            </div>
+                        </div>
+                        <div class="x-axis-label">
+                            <span>Implementation Effort</span>
+                            <div class="axis-markers">
+                                <span>Low</span>
+                                <span>Medium</span>
+                                <span>High</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="priority-grid" id="priorityGrid">
+                        <!-- Quadrant Labels -->
+                        <div class="quadrant-label top-left">Quick Wins</div>
+                        <div class="quadrant-label top-right">Major Projects</div>
+                        <div class="quadrant-label bottom-left">Fill-ins</div>
+                        <div class="quadrant-label bottom-right">Thankless Tasks</div>
+                        
+                        <!-- Grid lines -->
+                        <div class="grid-line horizontal" style="top: 50%"></div>
+                        <div class="grid-line vertical" style="left: 50%"></div>
+                        
+                        <!-- Use case items will be populated here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- List View -->
+            <div id="listView" class="view">
+                <div class="use-cases-list" id="useCasesList">
+                    <!-- Use case list items will be populated here -->
+                </div>
+            </div>
+
+            <!-- Stats View -->
+            <div id="statsView" class="view">
+                <div class="stats-container" id="statsContainer">
+                    <!-- Stats will be populated here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Use Case Form Modal -->
+    <div id="useCaseModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Add Use Case</h2>
+                <span class="close">&times;</span>
+            </div>
+            <form id="useCaseForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="title">Title *</label>
+                        <input type="text" id="title" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <input type="text" id="category" name="category" placeholder="e.g., automation, analysis">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" rows="3"></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="implementationEffort">Implementation Effort (1-10)</label>
+                        <input type="range" id="implementationEffort" name="implementationEffort" min="1" max="10" value="5">
+                        <span class="range-value" id="effortValue">5</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="businessBenefit">Business Benefit (1-10)</label>
+                        <input type="range" id="businessBenefit" name="businessBenefit" min="1" max="10" value="5">
+                        <span class="range-value" id="benefitValue">5</span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="implementationStatus">Implementation Status</label>
+                        <select id="implementationStatus" name="implementationStatus">
+                            <option value="backlog">Backlog</option>
+                            <option value="work_in_progress">Work in Progress</option>
+                            <option value="implemented">Implemented</option>
+                            <option value="ignored">Ignored</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="priority">Priority</label>
+                        <select id="priority" name="priority">
+                            <option value="low">Low</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="aiModel">AI Model</label>
+                    <input type="text" id="aiModel" name="aiModel" placeholder="e.g., gpt-4, claude-3">
+                </div>
+
+                <div class="form-group">
+                    <label for="tags">Tags (comma-separated)</label>
+                    <input type="text" id="tags" name="tags" placeholder="tag1, tag2, tag3">
+                </div>
+
+                <div class="form-group">
+                    <label for="prompt">Prompt/Instructions</label>
+                    <textarea id="prompt" name="prompt" rows="5" placeholder="Enter the AI prompt or instructions here..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="notes">Notes</label>
+                    <textarea id="notes" name="notes" rows="3" placeholder="Additional notes..."></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="saveBtn">Save</button>
+                    <button type="button" class="btn btn-danger" id="deleteBtn" style="display: none;">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
