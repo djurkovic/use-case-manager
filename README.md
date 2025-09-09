@@ -2,6 +2,8 @@
 
 A comprehensive web and CLI tool to organize, prioritize, and manage your AI use cases with an interactive prioritization grid.
 
+**Note**: This has been created entirely using Claude Code. 
+
 ## 🚀 Features
 
 - **📊 Interactive Web Interface** with drag-and-drop prioritization grid
