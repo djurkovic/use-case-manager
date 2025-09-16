@@ -141,9 +141,10 @@ The tool will work with any NocoDB table, but for optimal experience, create the
 | status | SingleSelect | active, archived, draft |
 | tags | JSON | Array of tags |
 | prompt | LongText | AI prompt/instructions |
-| notes | LongText | Additional notes |
+| examples | LongText | Additional notes, examples etc |
 | gridX | Number | X position on grid (0-100) |
 | gridY | Number | Y position on grid (0-100) |
+| case_id | SingleLineText | generated use-case-id | 
 
 ## 📊 Use Case Structure
 
